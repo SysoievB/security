@@ -1,16 +1,14 @@
 package com.security.service;
 
-import com.security.entity.Customer;
 import com.security.entity.Product;
-import com.security.repository.CustomerRepo;
 import com.security.repository.ProductRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,8 +19,8 @@ public class ProductService {
         return repo.findAll();
     }
 
-    public Product getProductById(Long id) {
-        return repo.findById(id).orElseThrow(NoSuchElementException::new);
+    public Optional<Product> getProductById(Long id) {
+        return repo.findById(id);
     }
 
     @Transactional

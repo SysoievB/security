@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -19,8 +20,8 @@ public class CustomerService {
         return repo.findAll();
     }
 
-    public Customer getCustomerById(Long id) {
-        return repo.findById(id).orElseThrow(NoSuchElementException::new);
+    public Optional<Customer> getCustomerById(Long id) {
+        return repo.findById(id);
     }
 
     @Transactional
