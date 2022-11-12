@@ -1,8 +1,6 @@
 package com.security.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.List;
 @Builder
 public class Customer {
     @Id
-    @GeneratedValue(generator = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "username")
@@ -26,9 +24,9 @@ public class Customer {
     @Column(name = "first_name")
     private String firstName;
 
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
 
-    @OneToOne()
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Product> products;
 }
