@@ -2,48 +2,79 @@ package com.security.controller;
 
 import com.security.entity.Customer;
 import com.security.service.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/customer")
+@RequestMapping("/api/v1/customer")
+@RequiredArgsConstructor
 public class CustomerController {
     private final CustomerService service;
 
-    @Autowired
-    public CustomerController(CustomerService service) {
-        this.service = service;
-    }
-
     @GetMapping
-    public List<Customer> getAllCustomers() {
-        return service.getAllCustomers();
+    public ResponseEntity<List<Customer>> getAllCustomers() {
+        var listCustomers = service.getAllCustomers();
+
+        if (listCustomers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(listCustomers);
     }
 
     @GetMapping("/{id}")
-    public Customer getProductById(@PathVariable Long id) {
-        return service
+    public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
+        if (id == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        var searchedCustomer = service
                 .getCustomerById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (searchedCustomer == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(searchedCustomer);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Customer createProduct(@RequestParam Customer customer) {
-        return service.saveCustomer(customer);
+    public ResponseEntity<Customer> createCustomer(@RequestParam Customer customer) {
+        if (customer == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        service.saveCustomer(customer);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(customer);
     }
 
     @PutMapping("/{id}")
-    public Customer updateProduct(@RequestBody Customer customer, @PathVariable Long id) {
-        return service.updateCustomer(id, customer);
+    public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer, @PathVariable Long id) {
+        if (id == null || customer == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        service.updateCustomer(id, customer);
+
+        return ResponseEntity.accepted().body(customer);
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteProduct(@PathVariable Long id) {
-        return service.deleteById(id);
+    public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id) {
+        if (id == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return service.deleteById(id)
+                ? ResponseEntity.accepted().build()
+                : ResponseEntity.notFound().build();
     }
 }
