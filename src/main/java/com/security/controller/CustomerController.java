@@ -21,7 +21,7 @@ public class CustomerController {
         var listCustomers = service.getAllCustomers();
 
         if (listCustomers.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();//204
         }
 
         return ResponseEntity.ok(listCustomers);
