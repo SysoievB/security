@@ -3,6 +3,7 @@ package com.security.service;
 import com.security.entity.Customer;
 import com.security.repository.CustomerRepo;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,7 +13,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepo repo;
 
