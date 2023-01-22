@@ -1,5 +1,7 @@
 package com.security.entity;
 
+import com.security.entity.security.AccountStatus;
+import com.security.entity.security.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -30,8 +33,11 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private Integer age;
+    private AccountStatus accountStatus;
+    private Role role;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     public User(String username, String password) {
@@ -49,16 +55,25 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
+        var authorities = new ArrayList<GrantedAuthority>();
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+        authorities.add(this.getRole());
+
+        if (this.getRole() == Role.ADMINISTRATOR) {
+            authorities.add(AccountStatus.ACTIVE);
+        } else {
+            authorities.add(this.getAccountStatus());
+        }
+
+        return authorities;
     }
 
     @Override
     public boolean isAccountNonLocked() {
+        return this.getAccountStatus() != AccountStatus.DELETED;
+    }
+    @Override
+    public boolean isAccountNonExpired() {
         return true;
     }
 

@@ -41,7 +41,6 @@ public class SecurityConfig {
                         .mvcMatchers(HttpMethod.GET, "/api/v1/customers/{id}").authenticated()
                         .mvcMatchers(HttpMethod.GET, "/api/v1/products").authenticated()
                         .mvcMatchers("/api/v1/users/**").hasRole("ADMIN")
-                        .mvcMatchers("/api/comment/**").hasAuthority("ACTIVE")
                         .mvcMatchers("/api/**").authenticated()
                         .anyRequest().denyAll())
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint()).and()

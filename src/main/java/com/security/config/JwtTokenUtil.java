@@ -1,5 +1,7 @@
 package com.security.config;
 
+import com.security.entity.security.AccountStatus;
+import com.security.entity.security.Role;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -13,6 +15,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 
@@ -46,7 +49,7 @@ public class JwtTokenUtil {
         var userRoles = ((List<?>) getClaimFromToken(token, claims -> claims.get("roles")))
                 .stream()
                 .map(role -> Role.valueOf((String) role))
-                .toList();
+                .collect(Collectors.toList());
 
         var userStatus = AccountStatus.valueOf((String) getClaimFromToken(token, claims -> claims.get("status")));
         var userGrantedAuthorities = new ArrayList<GrantedAuthority>(userRoles);
@@ -81,7 +84,7 @@ public class JwtTokenUtil {
                 .stream()
                 .filter(authority -> authority instanceof Role)
                 .map(authority -> ((Role) authority).name())
-                .toList();
+                .collect(Collectors.toList());
 
         String status = userDetails.getAuthorities()
                 .stream()
