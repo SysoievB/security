@@ -6,9 +6,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
-public interface UserRepo extends JpaRepository<User,Long> {
+public interface UserRepo extends JpaRepository<User, Long> {
 
     Optional<UserDetails> findUserByUsername(String username);
 
-    int deleteUserById(Long id);
+    boolean existsUserByUsername(String username);
+
+    //int deleteUserById(Long id);
 }

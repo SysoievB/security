@@ -40,11 +40,6 @@ public class User implements UserDetails {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
     public User(String firstName, String lastName, String username, String password, Integer age) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -72,6 +67,7 @@ public class User implements UserDetails {
     public boolean isAccountNonLocked() {
         return this.getAccountStatus() != AccountStatus.DELETED;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
