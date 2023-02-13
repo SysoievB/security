@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 @Component
-@PropertySource(value={"classpath:application.properties"})
+@PropertySource(value = {"classpath:application.properties"})
 public class JwtTokenUtil {
 
     @Value("${jwt.token.signature:default}")

@@ -1,6 +1,7 @@
 package com.security.service;
 
 import com.security.entity.User;
+import com.security.entity.dto.UserRequestDto;
 import com.security.entity.security.AccountStatus;
 import com.security.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
@@ -63,4 +64,19 @@ public class UserService implements UserDetailsService {
                         () -> new UsernameNotFoundException("User with username " + username + " was not found")
                 );
     }
+
+    @Transactional
+    public Optional<User> register(UserRequestDto userRequestDto) {
+        return Optional.empty();
+    }
 }
+/*@Transactional
+    public Optional<UserDto> register(UserRequestDto userRequestDto) {
+        User user = modelMapper.map(userRequestDto, User.class);
+        if (userRepository.existsByUsernameIgnoreCase(user.getUsername())) {
+            return Optional.empty();
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return Optional.of(modelMapper.map(userRepository.save(user), UserDto.class));
+    }*/
