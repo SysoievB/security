@@ -2,7 +2,6 @@ package com.security.service;
 
 import com.security.entity.Product;
 import com.security.repository.ProductRepo;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

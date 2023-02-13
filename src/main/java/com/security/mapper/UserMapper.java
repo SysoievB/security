@@ -12,7 +12,7 @@ public interface UserMapper {
     @Mapping(target = "password", source = "entity.password")
     UserRequestDto userToUserDto(User entity);
 
-    @Mapping(target = "username", source = "entity.username")
-    @Mapping(target = "password", source = "entity.password")
-    User userRequestDtoToUser(UserRequestDto entity);
+    @Mapping(target = "username", source = "dto.username")
+    @Mapping(target = "password", source = "dto.password")
+    User userRequestDtoToUser(UserRequestDto dto);
 }
